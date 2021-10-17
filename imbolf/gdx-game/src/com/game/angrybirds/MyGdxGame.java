@@ -43,12 +43,10 @@ public class MyGdxGame implements ApplicationListener
 	private ModelInstance sky;
 	private Texture gui;
 	private TextureRegion[] guir = new TextureRegion[12];
-	//private TextureRegionDrawable[] trd = new TextureRegionDrawable[12];
 	private Stage stage;
 	private ImageButton[] btn = new ImageButton[12];
 	private ModelInstance pmi;
 	private Vector3 playercoo = new Vector3();
-	//private boolean movef = false;
 	private Player mplayer;
 	private static final long DOUBLE_TIME = 300;
 	private static long lastClickTime = 0;
@@ -57,13 +55,11 @@ public class MyGdxGame implements ApplicationListener
 	private int movement;
 	private Vector3 playerVel = new Vector3(0,0,0);
 	private Vector3 tmp = new Vector3(0,0,0);
-	//private Vector3 tmp2 = new Vector3(0,0,0);
 	private InputEvent touchup = new InputEvent();
 	private InputEvent touchdown = new InputEvent();
 	private boolean[] isUp = new boolean[12];
 	private boolean isRun = false;
 	private int[] pointers = new int[12];
-	//private BoundingBox pmibb = new BoundingBox(), chunkbb;
 	
 	@Override
 	public void create()
@@ -117,23 +113,12 @@ public class MyGdxGame implements ApplicationListener
 	    
 		gui = new Texture(Gdx.files.internal("data/gui.png"));
 		
-		//guir[0] = new TextureRegion(gui,2f/256f,109f/256f,25f/256f,132f/256f);
-		//guir[1] = new TextureRegion(gui,28f/256f,109f/256f,51f/256f,132f/256f);
-		//guir[2] = new TextureRegion(gui,54f/256f,109f/256f,77f/256f,132f/256f);
-		//guir[3] = new TextureRegion(gui,80f/256f,109f/256f,103f/256f,132f/256f);
 		guir[4] = new TextureRegion(gui,0f,108f/256f,130f/256f,160f/256f);
         guir[5] = new TextureRegion(gui,218f/256f,64f/256f,236f/256f,100f/256f);
 		TextureRegion btns[][] = guir[4].split(26,26);
 		btns[0][4].setRegion(107f/256f,110f/256f,128f/256f,131f/256f);
 		btns[1][4].setRegion(107f/256f,136f/256f,128f/256f,157f/256f);
 		TextureRegion btns2[][] = guir[5].split(18,18);
-		/*
-		for(int i=0; i<4; i++) {
-	        trd[i] = new TextureRegionDrawable(guir[i]);
-		    trd[i].setMinWidth(180f);
-		    trd[i].setMinHeight(180f);
-		}
-		*/
 		TextureRegionDrawable[][] trrd = new TextureRegionDrawable[2][6];
 		for(int i=0;i<2;i++) {
 			for(int j=0;j<5;j++) {
@@ -156,179 +141,36 @@ public class MyGdxGame implements ApplicationListener
 		btn[0].setChecked(false);
 		btn[0].setTouchable(Touchable.disabled);
 		
-		/*btn[0].addListener(new ClickListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnForword", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				long currentTimeMillis = System.currentTimeMillis();
-				Log.v("currtm", "deltatime: "+ (currentTimeMillis-lastClickTime));
-				if (currentTimeMillis - lastClickTime < DOUBLE_TIME) {
-					movement = Player.MOVE.RUN;
-					Log.v("for","running");
-				}
-				else {
-				    movement = Player.MOVE.FORWORD;
-					Log.v("for","walking");
-				}
-				lastClickTime = currentTimeMillis;
-				btn[5].setVisible(true);
-				btn[6].setVisible(true);
-				btn[0].setChecked(true);
-				
-				return true;
-			}
-			
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnForword", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.STOP;
-				btn[5].setVisible(false);
-				btn[6].setVisible(false);
-				btn[0].setChecked(false);
-			}
-			
-			@Override
-			public void touchDragged(InputEvent event, float x, float y, int point) {
-				if(!btn[0].isOver()) {
-					//btn[0].clearActions();
-				}
-				Log.v("btnn0","touchdragged"+event);
-			}
-			
-		});
-		*/
-	    
 		btn[1] = new ImageButton(trrd[0][1]);
 		btn[1].setPosition(20,180);
 		btn[1].setChecked(false);
 		btn[1].setTouchable(Touchable.disabled);
-		/*btn[1].addListener(new ClickListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnLeft", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.LEFT;
-			    btn[5].setVisible(true);
-			    //btn[6].setVisible(true);
-		        return true;
-		    }
 
-		    @Override
-		    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-			    Gdx.app.log("btnLeft", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.STOP;
-				btn[5].setVisible(false);
-				//btn[6].setVisible(false);
-			}
-		});
-		*/
 		btn[2] = new ImageButton(trrd[0][2]);
 		btn[2].setPosition(200,0);
 		btn[2].setChecked(false);
 		btn[2].setTouchable(Touchable.disabled);
-		/*btn[2].addListener(new ClickListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnBack", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.BACK;
-				return true;
-			}
-
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnBack", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.STOP;
-			}
-		});
-		*/
+		
 		btn[3] = new ImageButton(trrd[0][3]);
 		btn[3].setPosition(380,180);
 		btn[3].setChecked(false);
 		btn[3].setTouchable(Touchable.disabled);
-		/*btn[3].addListener(new ClickListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnRight", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.RIGHT;
-				//btn[5].setVisible(true);
-				btn[6].setVisible(true);
-				return true;
-			}
 
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnRight", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.STOP;
-				//btn[5].setVisible(false);
-				btn[6].setVisible(false);
-			}
-		});
-		*/
 		btn[4] = new ImageButton(trrd[0][4],trrd[0][4],trrd[1][4]);
 		btn[4].setPosition(200,180);
 		btn[4].setChecked(false);
 		btn[4].setName("Jfalse");
 		btn[4].setTouchable(Touchable.disabled);
-		/*btn[4].addListener(new ClickListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnJUMP", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.RISE;
-				return true;
-			}
 
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnJUMP", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.STOP;
-			}
-		});
-		*/
 		btn[5] = new ImageButton(trrd[1][0]);
 		btn[5].setPosition(20,360);
 		btn[5].setChecked(false);
 		btn[5].setTouchable(Touchable.disabled);
-		/*btn[5].addListener(new ClickListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnLU", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.LEFTFRONT;
-				btn[5].setVisible(true);
-				//btn[6].setVisible(true);
-				return true;
-			}
 
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnLU", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.STOP;
-				btn[5].setVisible(false);
-				//btn[6].setVisible(false);
-			}
-		});
-		*/
 		btn[6] = new ImageButton(trrd[1][1]);
 		btn[6].setPosition(380,360);
 		btn[6].setChecked(false);
 		btn[6].setTouchable(Touchable.disabled);
-		/*btn[6].addListener(new ClickListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnRU", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.RIGHTFRONT;
-				//btn[5].setVisible(true);
-				btn[6].setVisible(true);
-				return true;
-			}
-
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("btnRU", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
-				movement = Player.MOVE.STOP;
-				//btn[5].setVisible(false);
-				btn[6].setVisible(false);
-			}
-		});
-		*/
 		
 		btn[7] = new ImageButton(trrd[1][2]);
 		btn[7].setPosition(1900,270);
@@ -344,17 +186,12 @@ public class MyGdxGame implements ApplicationListener
 		btn[9].setPosition(1915,220);
 		btn[9].setChecked(false);
 		btn[9].setTouchable(Touchable.disabled);
-		/*
-		btn[11] = new ImageButton(trrd[0][5]);
-		btn[11].setPosition(1200,360);
-		btn[11].setChecked(false);
-		*/
+
 		btn[5].setVisible(false);
 		btn[6].setVisible(false);
 		btn[7].setVisible(false);
 		btn[8].setVisible(false);
 		
-		Log.v("hhhhh",btn[0].getHeight()+";"+btn[0].getWidth());
 		for(int i=0; i<10; i++) {
 		    stage.addActor(btn[i]);
 	    }
@@ -365,23 +202,16 @@ public class MyGdxGame implements ApplicationListener
 		stage.addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("stage", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
 				if(x<580f&&y<560f) {
 					if(x>=200 && x<=380 && y>=360 && y<=540 && !btn[0].isChecked()) {
-						Gdx.app.log("btnForword", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer);
 						long currentTimeMillis = System.currentTimeMillis();
-						Log.v("currtm", "deltatime: "+ (currentTimeMillis-lastClickTime));
 						if (currentTimeMillis - lastClickTime < DOUBLE_TIME) {
 							movement = Player.MOVE.RUN;
 							isRun = true;
-							Log.v("for","running");
 						}
 						else {
 							movement = Player.MOVE.FORWORD;
 							isRun = false;
-							//tem.set(playerVel);
-							//playerVel.add(0f,0f,3f);
-							Log.v("for","walking");
 						}
 						lastClickTime = currentTimeMillis;
 						btn[5].setVisible(true);
@@ -391,29 +221,24 @@ public class MyGdxGame implements ApplicationListener
 
 					}
 					else if(x>=20 && x<=200 && y>=180 && y<=360 && !btn[1].isChecked()) {
-						Gdx.app.log("btnLeft", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
 						movement = Player.MOVE.LEFT;
 						btn[5].setVisible(true);
 						btn[1].setChecked(true);
 						pointers[1] = pointer;
 					}
 					else if(x>=200 && x<=380 && y>=0 && y<=180 && !btn[2].isChecked()) {
-						Gdx.app.log("btnBack", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
 						movement = Player.MOVE.BACK;
 						btn[2].setChecked(true);
 						pointers[2] = pointer;
 					}
 					else if(x>=380 && x<=560 && y>=180 && y<=360 && !btn[3].isChecked()) {
-						Gdx.app.log("btnRight", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
 						movement = Player.MOVE.RIGHT;
 						btn[6].setVisible(true);
 						btn[3].setChecked(true);
 						pointers[3] = pointer;
 					}
 					else if(x>=200 && x<=380 && y>=180 && y<=360) {
-						Gdx.app.log("btnJUMP", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
 						long currentTimeMillis3 = System.currentTimeMillis();
-						Log.v("currtm", "deltatime: "+ (currentTimeMillis3-lastClickTime3));
 						if (currentTimeMillis3 - lastClickTime3 < DOUBLE_TIME) {
 							btn[4].toggle();
 							if(btn[4].isChecked()) {
@@ -426,18 +251,15 @@ public class MyGdxGame implements ApplicationListener
 								btn[8].setVisible(false);
 								btn[9].setVisible(true);
 							}
-							Log.v("JUMP","flyingChange");
 						}
 						else if(!btn[4].isChecked()){
 							movement = Player.MOVE.RISE;
-							Log.v("JUMP","jumping");
 						}
 						lastClickTime3 = currentTimeMillis3;
 						btn[4].setName("Jtrue");
 						pointers[4] = pointer;
 					}
 					else if(x>=20 && x<=200 && y>=360 && y<=540 && !btn[5].isChecked() && btn[5].isVisible()) {
-						Gdx.app.log("btnLU", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
 						movement = Player.MOVE.LEFTFRONT;
 						btn[5].setVisible(true);
 						btn[6].setVisible(true);
@@ -445,7 +267,6 @@ public class MyGdxGame implements ApplicationListener
 						pointers[5] = pointer;
 					}
 					else if(x>=380 && x<=560 && y>=360 && y<=540 && !btn[6].isChecked() && btn[6].isVisible()) {
-						Gdx.app.log("btnRU", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
 						movement = Player.MOVE.RIGHTFRONT;
 						btn[5].setVisible(true);
 						btn[6].setVisible(true);
@@ -455,29 +276,23 @@ public class MyGdxGame implements ApplicationListener
 				
 				}
 				else if(x>=1900 && x<=2080 && y>=270 && y<=450 && !btn[7].isChecked() && btn[7].isVisible()) {
-					Gdx.app.log("btnRise", "clicked"+event);
 					movement = Player.MOVE.RISE;
 					btn[7].setChecked(true);
 					pointers[7] = pointer;
 				}
 				else if(x>=1900 && x<=2080 && y>=90 && y<=270 && !btn[8].isChecked() && btn[8].isVisible()) {
-					Gdx.app.log("btnDown", "clicked"+event);
 					movement = Player.MOVE.DOWN;
 					btn[8].setChecked(true);
 					pointers[8] = pointer;
 				}
 				else if(btnSneakReg.contains(x,y) && btn[9].isVisible()) {
-					Gdx.app.log("btnSneak", "clicked"+event);
 					long currentTimeMillis2 = System.currentTimeMillis();
-					Log.v("currtm", "deltatime: "+ (currentTimeMillis2-lastClickTime2));
 					if (currentTimeMillis2 - lastClickTime2 < DOUBLE_TIME) {
 						movement = Player.MOVE.DOWN;
 						btn[9].toggle();
-						Log.v("sneak","double");
 					}
 					else {
 				
-						Log.v("sneak","single");
 					}
 					lastClickTime2 = currentTimeMillis2;
 					pointers[9] = pointer;
@@ -489,15 +304,12 @@ public class MyGdxGame implements ApplicationListener
 			
 			@Override
 			public void touchDragged(InputEvent event, float x, float y, int pointer) {
-				Log.v("stage", "dragged:" + event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; btnLUvis: "+btn[5].isVisible()+"; btnRUvis: "+btn[6].isVisible()+"; movement: "+movement);
 				if((x>=580f||y>=560f) && (x<1900 || x>2080 || y<90 || y>450) && !btnSneakReg.contains(x,y)) {
-					Log.v("stage", "dragged:beforeUp" + event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; btnLUvis: "+btn[5].isVisible()+"; btnRUvis: "+btn[6].isVisible()+"; movement: "+movement);
 					stage.touchUp((int)x,Gdx.graphics.getHeight()-(int)y,pointer,0);
 					mplayer.touchDown((int)x,Gdx.graphics.getHeight()-(int)y,pointer,0);
 				    return;
 				}
 				if(x>=20 && x<=200 && y>=360 && y<=540 && !btn[5].isChecked() && btn[5].isVisible()) {
-					Gdx.app.log("btnLU", "clickedDown; x:"+x+"; y:"+y+"; p:"+pointer);
 					movement = Player.MOVE.LEFTFRONT;
 					btn[5].setVisible(true);
 					btn[6].setVisible(true);
@@ -505,7 +317,6 @@ public class MyGdxGame implements ApplicationListener
 					pointers[5] = pointer;
 				}
 				else if(x>=380 && x<=560 && y>=360 && y<=540 && !btn[6].isChecked() && btn[6].isVisible()) {
-					Gdx.app.log("btnRU", "clickedDown; x:"+x+"; y:"+y+"; p:"+pointer);
 					movement = Player.MOVE.RIGHTFRONT;
 					btn[5].setVisible(true);
 					btn[6].setVisible(true);
@@ -513,78 +324,56 @@ public class MyGdxGame implements ApplicationListener
 					pointers[6] = pointer;
 				}
 				else if((x<200 || x>380 || y<360 || y>540) && btn[0].isChecked() && pointer == pointers[0]){
-					Gdx.app.log("btnForword", "clickedUp; x:"+x+"; y:"+y+"; p:"+pointer);
-					//movement = Player.MOVE.STOP;
-					//playerVel.add(0,0,-3f);
 					if(!(btn[5].isChecked() || btn[6].isChecked())) {
-						//isRun = false;
 						btn[5].setVisible(false);
 						btn[6].setVisible(false);
 					}
 					btn[0].setChecked(false);
 				}
 				else if((x<20 || x>200 || y<180 || y>360) && btn[1].isChecked() && pointer == pointers[1]) {
-					Gdx.app.log("btnLeft", "clickedUp; x:"+x+"; y:"+y+"; p:"+pointer);
-					//movement = Player.MOVE.STOP;
 					if(!btn[0].isChecked() && !btn[5].isChecked()) {
 					    btn[5].setVisible(false);
 					}
 					btn[1].setChecked(false);
 				}
 				else if((x<200 || x>380 || y<0 || y>180) && btn[2].isChecked() && pointer == pointers[2]) {
-					Gdx.app.log("btnBack", "clickedUp; x:"+x+"; y:"+y+"; p:"+pointer);
-					//movement = Player.MOVE.STOP;
 					btn[2].setChecked(false);
 				}
 				else if((x<380 || x>560 || y<180 || y>360) && btn[3].isChecked() && pointer == pointers[3]) {
-					Gdx.app.log("btnRight", "clickedUp; x:"+x+"; y:"+y+"; p:"+pointer);
-					//movement = Player.MOVE.STOP;
 					if(!btn[0].isChecked() && !btn[6].isChecked()) {
 					    btn[6].setVisible(false);
 					}
 					btn[3].setChecked(false);
 				}
 				else if((x<201 || x>379 || y<181 || y>359) && btn[4].getName().equals("Jtrue") && pointer == pointers[4]) {
-					Gdx.app.log("btnJUMP", "clickedUp; x:"+x+"; y:"+y+"; p:"+pointer);
-					//movement = Player.MOVE.STOP;
 					btn[4].setName("Jfalse");
 				}
 				else if((x<20 || x>200 || y<360 || y>540) && btn[5].isChecked() && pointer == pointers[5]) {
-					Gdx.app.log("btnLU", "clickedUp; x:"+x+"; y:"+y+"; p:"+pointer);
-					//movement = Player.MOVE.STOP;
 					btn[5].setVisible(false);
 					btn[6].setVisible(false);
 					btn[5].setChecked(false);
 				}
 				else if((x<380 || x>560 || y<360 || y>540) && btn[6].isChecked() && pointer == pointers[6]) {
-					Gdx.app.log("btnRU", "clickedUp; x:"+x+"; y:"+y+"; p:"+pointer);
-					//movement = Player.MOVE.STOP;
 					btn[5].setVisible(false);
 					btn[6].setVisible(false);
 					btn[6].setChecked(false);
 				}
 				else if((x<1900 || x>2080 || y<270 || y>450) && btn[7].isChecked() && pointer == pointers[7]) {
-					Gdx.app.log("btnRise", "clicked"+event);
 					btn[7].setChecked(false);
 				}
 				else if((x<1900 || x>2080 || y<90 || y>270) && btn[8].isChecked() && pointer == pointers[8]) {
-					Gdx.app.log("btnDown", "clicked"+event);
 					btn[8].setChecked(false);
 				}
 				
 				else if(x>=200 && x<=380 && y>=360 && y<=540 && !btn[0].isChecked()) {
-					Gdx.app.log("btnForword", "clickedDown; x:"+x+"; y:"+y+"; p:"+pointer);
 					long currentTimeMillis = System.currentTimeMillis();
-					Log.v("currtm", "deltatime: "+ (currentTimeMillis-lastClickTime));
 					if (currentTimeMillis - lastClickTime < DOUBLE_TIME) {
 						movement = Player.MOVE.RUN;
 						isRun = true;
-						Log.v("for","running");
 					}
 					else {
 						movement = Player.MOVE.FORWORD;
 						isRun = false;
-						Log.v("for","walking");
 					}
 					lastClickTime = currentTimeMillis;
 					btn[5].setVisible(true);
@@ -593,31 +382,24 @@ public class MyGdxGame implements ApplicationListener
 					pointers[0] = pointer;
 				}
 				else if(x>=20 && x<=200 && y>=180 && y<=360 && !btn[1].isChecked()) {
-					Gdx.app.log("btnLeft", "clickedDown; x:"+x+"; y:"+y+"; p:"+pointer);
 					movement = Player.MOVE.LEFT;
 					btn[5].setVisible(true);
-					//btn[6].setVisible(false);
 					btn[1].setChecked(true);
 					pointers[1] = pointer;
 				}
 				else if(x>=200 && x<=380 && y>=0 && y<=180 && !btn[2].isChecked()) {
-					Gdx.app.log("btnBack", "clickedDown; x:"+x+"; y:"+y+"; p:"+pointer);
 					movement = Player.MOVE.BACK;
 					btn[2].setChecked(true);
 					pointers[2] = pointer;
 				}
 				else if(x>=380 && x<=560 && y>=180 && y<=360 && !btn[3].isChecked()) {
-					Gdx.app.log("btnRight", "clickedDown; x:"+x+"; y:"+y+"; p:"+pointer);
 					movement = Player.MOVE.RIGHT;
-					//btn[5].setVisible(false);
 					btn[6].setVisible(true);
 					btn[3].setChecked(true);
 					pointers[3] = pointer;
 				}
 				else if(x>=201 && x<=379 && y>=181 && y<=359 && btn[4].getName().equals("Jfalse")) {
-					Gdx.app.log("btnJUMP", "clickedDown; x:"+x+"; y:"+y+"; p:"+pointer);
 					long currentTimeMillis3 = System.currentTimeMillis();
-					Log.v("currtm", "deltatime: "+ (currentTimeMillis3-lastClickTime3));
 					if (currentTimeMillis3 - lastClickTime3 < DOUBLE_TIME) {
 						btn[4].toggle();
 						if(btn[4].isChecked()) {
@@ -630,24 +412,20 @@ public class MyGdxGame implements ApplicationListener
 							btn[8].setVisible(false);
 							btn[9].setVisible(true);
 						}
-						Log.v("JUMP","flyingChange");
 					}
 					else if(!btn[4].isChecked()){
 						movement = Player.MOVE.RISE;
-						Log.v("JUMP","jumping");
 					}
 					lastClickTime3 = currentTimeMillis3;
 					btn[4].setName("Jtrue");
 					pointers[4] = pointer;
 				}
 				else if(x>=1900 && x<=2080 && y>=270 && y<=450 && !btn[7].isChecked() && btn[7].isVisible()) {
-					Gdx.app.log("btnRise", "clicked"+event);
 					movement = Player.MOVE.RISE;
 					btn[7].setChecked(true);
 					pointers[7] = pointer;
 				}
 				else if(x>=1900 && x<=2080 && y>=90 && y<=270 && !btn[8].isChecked() && btn[8].isVisible()) {
-					Gdx.app.log("btnDown", "clicked"+event);
 					movement = Player.MOVE.DOWN;
 					btn[8].setChecked(true);
 					pointers[8] = pointer;
@@ -675,29 +453,12 @@ public class MyGdxGame implements ApplicationListener
 					btn[6].setChecked(false);
 					btn[7].setChecked(false);
 					btn[8].setChecked(false);
-				}
-				
-				
-				/*for(int i=0;i<7;i++) {
-				    if(!btn[i].isOver() && btn[i].isChecked()) {
-					    Log.v("btn"+i, "notover");
-					    btn[i].fire(touchup);
-						break;
-				    }
-				    else if(btn[i].isOver() && !btn[i].isChecked()){
-					    btn[i].fire(touchdown);
-						break;
-				    }
-				}*/
-				//Log.v("sttttt","btnnnn0:"+btn[0].isOver()+";"+btn[0].isChecked()+";"+btn[0].isPressed());
-				
+				}				
 			}
 
 			@Override
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("stage", "clicked"+event+"; x:"+x+"; y:"+y+"; p:"+pointer+"; bt:"+button);
 				movement = Player.MOVE.STOP;
-				//isRun = false;
 				if(pointer == pointers[0]) {
 				    btn[0].setChecked(false);
 					if(!btn[1].isChecked() && !btn[5].isChecked()) {
@@ -737,7 +498,6 @@ public class MyGdxGame implements ApplicationListener
 				if(pointer == pointers[8]) {
 				    btn[8].setChecked(false);
 				}
-				//btn[10].setChecked(false);
 			}
 		});
         
@@ -750,8 +510,7 @@ public class MyGdxGame implements ApplicationListener
 	private void doneLoading() {
 		grass[1] = assets.get("data/grass.png", Texture.class);
 		grass[2] = assets.get("data/dirt.png", Texture.class);
-		
-		
+
 		tre[1] = new TextureRegion(grass[1]);
 		tre[2] = new TextureRegion(grass[2]);
 		
@@ -767,7 +526,6 @@ public class MyGdxGame implements ApplicationListener
 		sky.transform.scl(1.5f);
 		pmi = player();
 		
-		//chunkbb = instances.get(0).bounds;
 		done = true;
 	}
 
@@ -777,11 +535,8 @@ public class MyGdxGame implements ApplicationListener
 		if(!done && assets.update()) {
 			try {
 		        doneLoading();
-				Gdx.app.log("render", "doneloading");
 			}
 			catch(Exception e) {
-				Gdx.app.log("dl","err",e);
-				Log.v("dl","err",e);
 				dispose();
 			}
 			
@@ -803,25 +558,17 @@ public class MyGdxGame implements ApplicationListener
 		    }
 			
 		}
-		Log.v("modelBatchTest", "render");
-	//	getAllThread();
+		
 		if (sky != null)
 			try {
 			    sky.transform.setTranslation(playercoo);
 				modelBatch.render(sky);
-				//Log.v("sky", "renderd");
 			}
 			catch(Exception e) {
-				Log.v("sky", "move:"+playercoo.toString(), e);
 			}
 			
 		if(pmi != null) {
-		    modelBatch.render(pmi);
-			/*if(movef) {
-			    pmi.transform.setTranslation(playercoo.add(3f*Gdx.graphics.getDeltaTime()*mplayer.playerDirection.x,0,3f*Gdx.graphics.getDeltaTime()*mplayer.playerDirection.z));
-			}*/
-			//pmi.calculateBoundingBox(pmibb);
-			
+		    modelBatch.render(pmi);			
 			
 			if(btn[0].isChecked() && !isUp[0]) {
 				isUp[0] = true;
@@ -863,12 +610,10 @@ public class MyGdxGame implements ApplicationListener
 			if(btn[4].getName().equals("Jtrue") && !isUp[4]) {
 				isUp[4] = true;
 				playerVel.add(0f, 3f, 0f);
-				//playerVel.y = 3f;
 			}
 			else if(btn[4].getName().equals("Jfalse") && isUp[4]){
 				isUp[4] = false;
 				playerVel.add(0f, -3f, 0f);
-				//playerVel.y = 0f;
 			}
 			
 			if(btn[5].isChecked() && !isUp[5]) {
@@ -906,50 +651,8 @@ public class MyGdxGame implements ApplicationListener
 				isUp[8] = false;
 				playerVel.add(0f, 3f, 0f);
 			}
-			
-			/*if(world[Math.round(playercoo.x)][(int)(playercoo.y-0.4f)][Math.round(playercoo.z)] == 1 && playerVel.y<0) {
-				playerVel.y = 0;
-			}
-			else {*/
-				/*if(playercoo.y>1f) {
-				    playerVel.y -= 1f * Gdx.graphics.getDeltaTime();
-				}*/
-		//	}
-			
-			pmi.transform.setTranslation(playercoo.mulAdd(tmp.set(playerVel.z*mplayer.playerDirection.x+playerVel.x*mplayer.playerDirection.z, playerVel.y, playerVel.z*mplayer.playerDirection.z-playerVel.x*mplayer.playerDirection.x), Gdx.graphics.getDeltaTime()));
-			/*switch (movement) {
-				case Player.MOVE.FORWORD:
-					pmi.transform.setTranslation(playercoo.add(3f*Gdx.graphics.getDeltaTime()*mplayer.playerDirection.x,0,3f*Gdx.graphics.getDeltaTime()*mplayer.playerDirection.z));
-					break;
-				case Player.MOVE.BACK:
-					pmi.transform.setTranslation(playercoo.add(-3f*Gdx.graphics.getDeltaTime()*mplayer.playerDirection.x,0,-3f*Gdx.graphics.getDeltaTime()*mplayer.playerDirection.z));
-					break;
-				case Player.MOVE.LEFT:
-					pmi.transform.setTranslation(playercoo.add(3f*Gdx.graphics.getDeltaTime()*mplayer.playerDirection.z,0,-3f*Gdx.graphics.getDeltaTime()*mplayer.playerDirection.x));
-				    break;
-				case Player.MOVE.RIGHT:
-					pmi.transform.setTranslation(playercoo.add(-3f*Gdx.graphics.getDeltaTime()*mplayer.playerDirection.z,0,3f*Gdx.graphics.getDeltaTime()*mplayer.playerDirection.x));
-				    break;
-				case Player.MOVE.RUN:
-					pmi.transform.setTranslation(playercoo.add(6f*Gdx.graphics.getDeltaTime()*mplayer.playerDirection.x,0,6f*Gdx.graphics.getDeltaTime()*mplayer.playerDirection.z));
-					break;
-				case Player.MOVE.RISE:
-					pmi.transform.setTranslation(playercoo.add(0,3f*Gdx.graphics.getDeltaTime(),0));
-				    break;
-				case Player.MOVE.DOWN:
-					pmi.transform.setTranslation(playercoo.add(0,-3f*Gdx.graphics.getDeltaTime(),0));
-				    break;
-				case Player.MOVE.LEFTFRONT:
-					pmi.transform.setTranslation(playercoo.add(3f*Gdx.graphics.getDeltaTime()*(mplayer.playerDirection.x+mplayer.playerDirection.z),0,3f*Gdx.graphics.getDeltaTime()*(mplayer.playerDirection.z-mplayer.playerDirection.x)));
-					break;
-				case Player.MOVE.RIGHTFRONT:
-					pmi.transform.setTranslation(playercoo.add(3f*Gdx.graphics.getDeltaTime()*(mplayer.playerDirection.x-mplayer.playerDirection.z),0,3f*Gdx.graphics.getDeltaTime()*(mplayer.playerDirection.z+mplayer.playerDirection.x)));
-					break;
-				default:
-				    break;
-					
-			}*/
-			
+						
+			pmi.transform.setTranslation(playercoo.mulAdd(tmp.set(playerVel.z*mplayer.playerDirection.x+playerVel.x*mplayer.playerDirection.z, playerVel.y, playerVel.z*mplayer.playerDirection.z-playerVel.x*mplayer.playerDirection.x), Gdx.graphics.getDeltaTime()));			
 		}
 		modelBatch.end();
 		stage.act();
@@ -964,7 +667,6 @@ public class MyGdxGame implements ApplicationListener
 		font.draw(batch, "playerdir: " + mplayer.playerDirection.toString(), 20, 800);
 		font.draw(batch, "playerpos: " + String.format("%.1f", playercoo.x)+","+String.format("%.1f", (playercoo.y-0.4f))+","+String.format("%.1f", playercoo.z)+"; velocity: "+String.format("%.1f", playerVel.len()), 20, 750);
 		font.draw(batch, "playermov: " + movement + "; sneak: " + btn[9].isChecked(), 20, 700);
-		font.draw(batch, "skymat: " + sky.transform.M00 + "," + sky.transform.M01 + "," + sky.transform.M02 + "," + sky.transform.M03 + "," + sky.transform.M10 + "," + sky.transform.M11 + "," + sky.transform.M12 + "," + sky.transform.M13 + "," + sky.transform.M20 + "," + sky.transform.M21 + "," + sky.transform.M22 + "," + sky.transform.M23 + "," + sky.transform.M30 + "," + sky.transform.M31 + "," + sky.transform.M32 + "," + sky.transform.M33, 20, 650);
 		batch.end();
 	}
 
@@ -991,24 +693,7 @@ public class MyGdxGame implements ApplicationListener
 	@Override
 	public void resume()
 	{
-	}
-	
-	private void getAllThread() {
-		final String TAG = "getAllThread";
-		Map<Thread, StackTraceElement[]> allStackTraces = Thread.getAllStackTraces();
-		Log.d(TAG, "线程总数：" + allStackTraces.size());
-		for (Map.Entry<Thread, StackTraceElement[]> stackTrace : allStackTraces.entrySet()) {
-			Thread thread = (Thread) stackTrace.getKey();
-			Log.d(TAG, "线程：" + thread.getName() + ",id=" + thread.getId() + ",state=" + thread.getState());
-			StackTraceElement[] stack = (StackTraceElement[]) stackTrace.getValue();
-			String strStackTrace = "堆栈：";
-			for (StackTraceElement stackTraceElement : stack) {
-				strStackTrace += stackTraceElement.toString() + "\n";
-			}
-			Log.d(TAG, strStackTrace);
-		}
-	}
-	
+	}	
 	
 	protected boolean isVisible(final Camera cam, final GameObject instance) {
 		instance.transform.getTranslation(tempPosition);
@@ -1071,19 +756,6 @@ public class MyGdxGame implements ApplicationListener
 		    }
 		}
 	    model = modelBuilder.end();
-	}
-	
-	public void sky() {
-		int attr = VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates;
-		ModelBuilder modelBuilder = new ModelBuilder();
-		modelBuilder.begin();
-
-		modelBuilder.part("sph", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.BLUE)))
-			.sphere(20,20,20,10,10);
-	    Model mmodel = modelBuilder.end();
-		GameObject instance = new GameObject(mmodel);
-		instance.transform.setToTranslation(0, 0, 0);
-		instances.add(instance);
 	}
 	
 	public ModelInstance player() {
